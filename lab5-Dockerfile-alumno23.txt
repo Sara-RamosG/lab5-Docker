@@ -1,0 +1,24 @@
+#Fichero Dockerfile para la creación de una imagen Docker con python, jupyter, numpy y numba implementados.
+#Por defecto ejecuta un programa (pi.ipynb) que estima el valor numérico de pi a partir de 10**5 simulaciones. El objetivo de programa es calcular el tiempo de ejecución en secuencial y en paralelo usando dichos paquetes.
+
+#Partimos de una imagen de python
+FROM python:3.11-slim
+
+#Instalamos los paquetes necesarios
+RUN pip install jupyter
+RUN pip install numpy
+RUN pip install numba
+
+#Creamos un directorio para guardar el programa
+RUN mkdir /app
+WORKDIR /app
+
+#Copiamos el programa al directorio
+#El programa debe estar en el directorio actual local
+COPY ./pi.ipynb /app/
+
+#Incluimos el comando por defecto
+CMD ["ipython", "/app/pi.ipynb", "10**5"]
+
+#Indicamos que el contenedor escucha en el puerto 8888
+EXPOSE 8888
